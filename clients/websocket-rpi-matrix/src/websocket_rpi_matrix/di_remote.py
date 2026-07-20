@@ -673,10 +673,10 @@ class Buzzer:
             buzz = cls(spk=buzzer, enabled=True, **kwargs)
             # buzz.act('fmart.mid', '_init')
             # buzz.act('encoder', '_init')
-            # buzz.act('boop', '_init')
+            buzz.act('boop', '_init')
             # buzz.act('encoder', '_init')
             nrttl = notes_to_rtttl(cls.MELODIES['family_mart'], name="family_mart", default_duration=2**4, default_octave=4, bpm=160, _scale=1.35)
-            buzzer.play_rtttl(nrttl)
+            # buzzer.play_rtttl(nrttl)
             # buzzer.play_rtttl(cls.mario)
             return buzz
         except Exception as e:

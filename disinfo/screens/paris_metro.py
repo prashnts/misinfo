@@ -18,6 +18,7 @@ from ..utils.palettes import metro_colors
 from ..utils.time import is_expired
 from ..data_structures import FrameState, AppBaseModel
 from ..drat.app_states import PubSubStateManager, PubSubMessage
+from ..drat.idfm import fetch_state
 from ..drat import idfm
 from ..redis import get_dict, publish
 
@@ -221,9 +222,12 @@ def metro_view(fs: FrameState, state: MetroAppState):
         ),
     )
 
+# draw = draw_loop(draw_stream, use_threads=True)
+
 
 def composer(fs: FrameState):
-    state = MetroAppStateManager().get_state(fs)
+    state = fetch_state()
+    print(state)
 
     return (visibility_slider
         .set_frame(metro_view(fs, state))
