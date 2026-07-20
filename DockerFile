@@ -1,0 +1,42 @@
+FROM python:3.13-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    DI_CONFIG_PATH=".config.json"
+
+# System dependencies required by native Python packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # pycairo / cairosvg
+    libcairo2-dev \
+    pkg-config \
+    # pyaudio
+    portaudio19-dev \
+    # cartopy (GEOS + PROJ)
+    libgeos-dev \
+    libproj-dev \
+    proj-data \
+    proj-bin \
+    # C/C++ build tools for native extensions
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+WORKDIR /app
+
+# Copy dependency manifests first so this layer is cached on source-only changes
+COPY pyproject.toml uv.lock ./
+
+# Install all non-dev dependencies (excluding the local project itself)
+RUN uv sync --frozen --no-dev --no-install-project
+
+# Copy the rest of the source tree and install the project
+COPY . .
+
+RUN uv sync --frozen --no-dev
+
+EXPOSE 4200
+
+CMD ["uv", "run", "uvicorn", "disinfo.web.server:app", "--host", "0.0.0.0", "--port", "4200"]
