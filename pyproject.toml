@@ -52,7 +52,7 @@ websocket-rpi-matrix = { path = "clients/websocket-rpi-matrix", editable = true 
 dev = [
     "jupyterlab>=4.6.0",
     "plotly>=6.8.0",
-    "pytest",
+    "pytest>=8.0.0",
     "watchdog>=6.0.0",
     "websocket-rpi-matrix",
 ]
