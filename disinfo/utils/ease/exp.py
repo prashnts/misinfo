@@ -8,5 +8,5 @@ def exp_out(t: float) -> float:
 
 def exp_in_out(t: float) -> float:
     if t * 2 <= 1:
-        return tpmt(1 - t * 2) / 2
-    return (2 - tpmt(t * 2 - 1)) / 2
+        return tpmt(1 - t) / 2
+    return (2 - tpmt(t - 1)) / 2
